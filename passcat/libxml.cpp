@@ -75,6 +75,8 @@ void libxml::dump_xml_content(std::wstring filename) {
 	}
 }
 
+//customized for filezilla
+//base64-decodes node value (password)
 void libxml::select_by_xpath(std::wstring filename, std::wstring XPATH) {
 	if (!initialized) return;
 
