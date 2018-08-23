@@ -75,7 +75,7 @@ void libxml::dump_xml_content(std::wstring filename) {
 	}
 }
 
-void libxml::select_single_node(std::wstring filename, std::wstring XPATH) {
+void libxml::select_by_xpath(std::wstring filename, std::wstring XPATH) {
 	if (!initialized) return;
 
 	MSXML::IXMLDOMDocument2Ptr xmlDoc;

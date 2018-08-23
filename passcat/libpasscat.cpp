@@ -39,11 +39,11 @@ void libpasscat::cat_filezilla_passwords(void) {
 	libxml::init();
 
 	if (PathFileExistsW(filezilla_recent_servers.c_str())) {
-		libxml::select_single_node(filezilla_recent_servers, FILEZILLA_XPATH_ONE);
+		libxml::select_by_xpath(filezilla_recent_servers, FILEZILLA_XPATH_ONE);
 	}
 
 	if (PathFileExistsW(filezilla_site_manager.c_str())) {
-		libxml::select_single_node(filezilla_site_manager, FILEZILLA_XPATH_TWO);
+		libxml::select_by_xpath(filezilla_site_manager, FILEZILLA_XPATH_TWO);
 	}
 
 	libxml::finalize();

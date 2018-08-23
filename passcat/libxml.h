@@ -30,6 +30,6 @@ namespace libxml {
 	extern bool initialized;
 	void init(void);
 	void dump_xml_content(std::wstring filename);
-	void select_single_node(std::wstring filename, std::wstring XPATH);
+	void select_by_xpath(std::wstring filename, std::wstring XPATH);
 	void finalize(void);
 }
