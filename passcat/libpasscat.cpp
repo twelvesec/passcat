@@ -118,6 +118,7 @@ void libpasscat::cat_wifi_passwords(void) {
 			if (WlanGetProfile(wlan, &pIfInfo->InterfaceGuid, wlanproflist->ProfileInfo[j].strProfileName, NULL, &profileXML, &flags, &access) == ERROR_SUCCESS) {
 
 				MSXML::IXMLDOMNodeListPtr list = libxml::select_by_path(profileXML, WIFI_XPATH_ONE);
+
 				std::wcout << "Authentication: " << list->item[0]->selectSingleNode("pf:authentication")->text << std::endl;
 				std::wcout << "Encryption: " << list->item[0]->selectSingleNode("pf:encryption")->text << std::endl;
 				std::wcout << "useOneX: " << list->item[0]->selectSingleNode("pf:useOneX")->text << std::endl;

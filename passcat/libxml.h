@@ -31,10 +31,8 @@
 namespace libxml {
 	extern bool initialized;
 	void init(void);
-	MSXML::IXMLDOMDocument2Ptr init_dom_document(LPWSTR data);
 	void dump_xml_content(std::wstring filename);
 	MSXML::IXMLDOMNodeListPtr select_by_path(std::wstring filename, std::wstring XPATH);
 	MSXML::IXMLDOMNodeListPtr select_by_path(LPWSTR data, std::wstring XPATH);
-	//MSXML::IXMLDOMNodeListPtr select_by_path(MSXML::IXMLDOMDocument2Ptr xmldoc, std::wstring XPATH);
 	void finalize(void);
 }
