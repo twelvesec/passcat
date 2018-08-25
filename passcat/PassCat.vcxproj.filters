@@ -27,6 +27,12 @@
     <ClCompile Include="libsystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="libfilezilla.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libpriv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libpasscat.h">
@@ -39,6 +45,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libfilezilla.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libpriv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

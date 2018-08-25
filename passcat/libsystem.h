@@ -30,4 +30,7 @@
 namespace libsystem {
 	HRESULT get_roaming_path(PWSTR* path);
 	std::wstring get_filezilla_path(void);
+	BOOL generate_temp_filename(LPWSTR filename);
+	BOOL dump_to_file(LPCWSTR filename, LPWSTR data);
+	DWORD GetProcessIdByProcessName(LPCWSTR pszProcessName);
 }

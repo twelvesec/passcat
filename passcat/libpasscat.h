@@ -25,5 +25,9 @@
 #pragma once
 
 namespace libpasscat {
+	extern bool initialized;
+	void init(void);
 	void cat_filezilla_passwords(void);
+	void cat_wifi_passwords(void);
+	void finalize(void);
 }

@@ -119,14 +119,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="libfilezilla.cpp" />
     <ClCompile Include="libpasscat.cpp" />
+    <ClCompile Include="libpriv.cpp" />
     <ClCompile Include="libsystem.cpp" />
     <ClCompile Include="libxml.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
+    <ClInclude Include="libfilezilla.h" />
     <ClInclude Include="libpasscat.h" />
+    <ClInclude Include="libpriv.h" />
     <ClInclude Include="libsystem.h" />
     <ClInclude Include="libxml.h" />
   </ItemGroup>

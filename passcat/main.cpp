@@ -35,11 +35,21 @@ int main(int argc, char *argv[])
 	std::cout << "  PassCat v." << VERSION << " - Passwords Recovery Tool" << std::endl;
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
+	libpasscat::init();
+
 	std::cout << "-------------------------" << std::endl;
 	std::cout << "  FileZilla Credentials" << std::endl;
 	std::cout << "-------------------------" << std::endl << std::endl;
 	libpasscat::cat_filezilla_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
+
+	std::cout << "-------------------------" << std::endl;
+	std::cout << "  WiFi Credentials" << std::endl;
+	std::cout << "-------------------------" << std::endl << std::endl;
+	libpasscat::cat_wifi_passwords();
+	std::cout << "-------------------------------------------" << std::endl << std::endl;
+
+	libpasscat::finalize();
 
 	return 0;
 }

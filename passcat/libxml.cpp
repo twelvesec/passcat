@@ -26,13 +26,7 @@
 #include "libxml.h"
 
 #include <Windows.h>
-#include <tchar.h>
 #include <iostream>
-
-#import <msxml6.dll>rename_namespace(_T("MSXML"))
-
-#pragma comment (lib, "Crypt32.lib")
-#include <Wincrypt.h>
 
 bool libxml::initialized = false;
 
@@ -57,7 +51,6 @@ void libxml::dump_xml_content(std::wstring filename) {
 		HRESULT hr = xmlDoc.CreateInstance(__uuidof(MSXML::DOMDocument60));
 
 		if (FAILED(hr)) {
-			CoUninitialize();
 			return;
 		}
 
@@ -75,10 +68,8 @@ void libxml::dump_xml_content(std::wstring filename) {
 	}
 }
 
-//customized for filezilla
-//base64-decodes node value (password)
-void libxml::select_by_xpath(std::wstring filename, std::wstring XPATH) {
-	if (!initialized) return;
+MSXML::IXMLDOMNodeListPtr libxml::select_by_path(std::wstring filename, std::wstring XPATH) {
+	if (!initialized) return NULL;
 
 	MSXML::IXMLDOMDocument2Ptr xmlDoc;
 
@@ -86,50 +77,89 @@ void libxml::select_by_xpath(std::wstring filename, std::wstring XPATH) {
 		HRESULT hr = xmlDoc.CreateInstance(__uuidof(MSXML::DOMDocument60));
 
 		if (FAILED(hr)) {
-			CoUninitialize();
-			return;
+			return NULL;
 		}
 
 		if (xmlDoc->load(_variant_t(filename.c_str())) != VARIANT_TRUE) {
 			std::wcout << "Unable to load " << filename << std::endl;
 		}
 		else {
-			MSXML::IXMLDOMNodeListPtr list = xmlDoc->selectNodes(_bstr_t(XPATH.c_str()));
-
-			for (long i = 0; i != list->length; ++i) {
-				std::wcout << "Host: " << list->item[i]->selectSingleNode("Host")->text << std::endl;
-				std::wcout << "Port: " << list->item[i]->selectSingleNode("Port")->text << std::endl;
-				std::wcout << "Username: " << list->item[i]->selectSingleNode("User")->text << std::endl;
-
-				// TODO: base64 decode passwords
-				BYTE* decoded = 0;
-				DWORD decodedLen = 0;
-
-				if (!CryptStringToBinaryW(list->item[i]->selectSingleNode("Pass")->text, 0, CRYPT_STRING_BASE64, NULL, &decodedLen, NULL, NULL)) {
-					std::wcout << std::endl;
-					continue;
-				}
-
-				decoded = (BYTE *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, (decodedLen + 1) * sizeof(BYTE));
-				if (decoded == NULL) {
-					std::wcout << std::endl;
-					continue;
-				}
-
-				if (!CryptStringToBinaryW(list->item[i]->selectSingleNode("Pass")->text, 0, CRYPT_STRING_BASE64, decoded, &decodedLen, NULL, NULL)) {
-					std::wcout << std::endl;
-					HeapFree(GetProcessHeap(), 0, decoded);
-					continue;
-				}
-
-				std::cout << "Password: " << decoded << std::endl;
-				std::wcout << std::endl;
-				HeapFree(GetProcessHeap(), 0, decoded);
-			}
+			return xmlDoc->selectNodes(_bstr_t(XPATH.c_str()));
 		}
 	}
 	catch (_com_error &e) {
 		std::cout << e.ErrorMessage() << std::endl;
 		xmlDoc = NULL;
 	}
+
+	return NULL;
+}
+
+MSXML::IXMLDOMNodeListPtr libxml::select_by_path(LPWSTR data, std::wstring XPATH) {
+	if (!initialized) return NULL;
+
+	MSXML::IXMLDOMDocument2Ptr xmlDoc;
+	WCHAR filename[MAX_PATH] = { 0 };
+
+	try {
+		HRESULT hr = xmlDoc.CreateInstance(__uuidof(MSXML::DOMDocument60));
+
+		if (FAILED(hr)) {
+			return NULL;
+		}
+
+		if (xmlDoc->loadXML(data) != VARIANT_TRUE) {
+			std::wcout << "Unable to load data" << std::endl;
+		}
+		else {
+			VARIANT varParam;
+			V_BSTR(&varParam) = SysAllocString(LR"del(xmlns:pf='http://www.microsoft.com/networking/WLAN/profile/v1')del");
+			V_VT(&varParam) = VT_BSTR;
+			xmlDoc->setProperty(L"SelectionNamespaces", varParam);
+			return xmlDoc->selectNodes(_bstr_t(XPATH.c_str()));
+		}
+	}
+	catch (_com_error &e) {
+		std::cout << e.ErrorMessage() << std::endl;
+		xmlDoc = NULL;
+	}
+
+	return NULL;
+}
+
+//MSXML::IXMLDOMNodeListPtr libxml::select_by_path(MSXML::IXMLDOMDocument2Ptr xmldoc, std::wstring XPATH) {
+//	if (!initialized) return NULL;
+//
+//	try {
+//		return xmldoc->selectNodes(_bstr_t(XPATH.c_str()));
+//	}
+//	catch (_com_error &e) {
+//		std::cout << e.ErrorMessage() << std::endl;
+//	}
+//
+//	return NULL;
+//}
+
+MSXML::IXMLDOMDocument2Ptr libxml::init_dom_document(LPWSTR data) {
+	if (!initialized) return NULL;
+
+	MSXML::IXMLDOMDocument2Ptr xmlDoc;
+
+	try {
+		HRESULT hr = xmlDoc.CreateInstance(__uuidof(MSXML::DOMDocument60));
+
+		if (FAILED(hr)) {
+			return NULL;
+		}
+
+		if (xmlDoc->loadXML(_bstr_t(data)) != VARIANT_TRUE) {
+			std::wcout << "Unable to load data" << std::endl;
+		}
+	}
+	catch (_com_error &e) {
+		std::cout << e.ErrorMessage() << std::endl;
+		xmlDoc = NULL;
+	}
+
+	return xmlDoc;
 }

