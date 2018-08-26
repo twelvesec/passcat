@@ -33,6 +33,9 @@
     <ClCompile Include="libpriv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="libwinscp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libpasscat.h">
@@ -51,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libpriv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libwinscp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

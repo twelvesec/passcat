@@ -31,3 +31,6 @@
 
 #define WIFI_XPATH_ONE L"//pf:WLANProfile/pf:MSM/pf:security/pf:authEncryption"
 #define WIFI_XPATH_TWO L"//pf:WLANProfile/pf:MSM/pf:security/pf:sharedKey"
+
+#define WINSCP_REG_ONE L"Software\\Martin Prikryl\\WinSCP 2\\Configuration"
+#define WINSCP_REG_TWO L"Software\\Martin Prikryl\\WinSCP 2\\Sessions"

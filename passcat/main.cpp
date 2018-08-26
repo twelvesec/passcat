@@ -49,6 +49,12 @@ int main(int argc, char *argv[])
 	libpasscat::cat_wifi_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
+	std::cout << "-------------------------" << std::endl;
+	std::cout << "  WinSCP Credentials" << std::endl;
+	std::cout << "-------------------------" << std::endl << std::endl;
+	libpasscat::cat_winscp_passwords();
+	std::cout << "-------------------------------------------" << std::endl << std::endl;
+
 	libpasscat::finalize();
 
 	return 0;
