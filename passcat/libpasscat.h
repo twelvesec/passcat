@@ -30,5 +30,6 @@ namespace libpasscat {
 	void cat_filezilla_passwords(void);
 	void cat_wifi_passwords(void);
 	void cat_winscp_passwords(void);
+	void cat_pidgin_passwords(void);
 	void finalize(void);
 }

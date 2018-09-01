@@ -40,6 +40,9 @@
 #pragma comment (lib, "Crypt32.lib")
 #include <Wincrypt.h>
 
+#pragma comment (lib, "Shlwapi.lib")
+#include <Shlwapi.h>
+
 bool libpasscat::initialized = false;
 
 void libpasscat::init(void) {
@@ -295,5 +298,27 @@ void libpasscat::cat_winscp_passwords(void) {
 	if (key) {
 		RegCloseKey(key);
 		key = NULL;
+	}
+}
+
+void libpasscat::cat_pidgin_passwords(void) {
+	std::wstring pidgin_path = libsystem::get_pidgin_path();
+	std::wstring accounts = pidgin_path + L"\\" + PIDGIN_FILE;
+
+	//std::wcout << accounts << std::endl;
+
+	if (!PathFileExistsW(accounts.c_str())) {
+		return;
+	}
+
+	MSXML::IXMLDOMNodeListPtr list = libxml::select_by_path(accounts, PIDGIN_XPATH);
+
+	for (long i = 0; i != list->length; ++i) {
+
+		std::wcout << "protocol: " << list->item[i]->selectSingleNode("protocol")->text << std::endl;
+		std::wcout << "name: " << list->item[i]->selectSingleNode("name")->text << std::endl;
+		std::wcout << "password: " << list->item[i]->selectSingleNode("password")->text << std::endl;
+		std::wcout << "alias: " << list->item[i]->selectSingleNode("alias")->text << std::endl;
+		std::wcout << std::endl;
 	}
 }

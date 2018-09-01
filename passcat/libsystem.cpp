@@ -24,6 +24,7 @@
 
 
 #include "libsystem.h"
+#include "config.h"
 
 #include <ShlObj.h>
 
@@ -82,7 +83,14 @@ std::wstring libsystem::get_filezilla_path(void) {
 	PWSTR roaming[MAX_PATH] = { 0 };
 	libsystem::get_roaming_path(roaming);
 	std::wstring filezilla_path(*roaming);
-	return filezilla_path + L"\\FileZilla";
+	return filezilla_path + FILEZILLA_FOLDER;
+}
+
+std::wstring libsystem::get_pidgin_path(void) {
+	PWSTR roaming[MAX_PATH] = { 0 };
+	libsystem::get_roaming_path(roaming);
+	std::wstring filezilla_path(*roaming);
+	return filezilla_path + PIDGIN_FOLDER;
 }
 
 BOOL libsystem::generate_temp_filename(LPWSTR filename) {

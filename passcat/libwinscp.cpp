@@ -24,7 +24,7 @@
 
 #include "libwinscp.h"
 
-int libwinscp::decrypt_char(char *hash, char **newhash, size_t *size) {
+int libwinscp::decrypt_char(const char *hash, char **newhash, size_t *size) {
 	unsigned char hex_flag = 0xA3;
 	char charset[17] = "0123456789ABCDEF";
 	int unpack1, unpack2, result = 0;
@@ -61,7 +61,7 @@ int libwinscp::decrypt_char(char *hash, char **newhash, size_t *size) {
 	return result;
 }
 
-std::string libwinscp::decrypt_password(const char *username, const char *hostname, char *hash) {
+std::string libwinscp::decrypt_password(const char *username, const char *hostname, const char *hash) {
 	unsigned char hex_flag = 0xFF;
 	int flag;
 	int length;

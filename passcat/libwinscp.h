@@ -29,6 +29,6 @@
 
 namespace libwinscp {
 
-	int decrypt_char(char *hash, char **newhash, size_t *size);
-	std::string decrypt_password(const char *username, const char *hostname, char *hash);
+	int decrypt_char(const char *hash, char **newhash, size_t *size);
+	std::string decrypt_password(const char *username, const char *hostname, const char *hash);
 }
