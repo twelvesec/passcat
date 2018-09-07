@@ -31,6 +31,7 @@
 #include "libpriv.h"
 #include "libsystem.h"
 #include "libwinscp.h"
+#include <wincred.h>
 
 #define WLAN_API_VER	2
 
@@ -315,10 +316,46 @@ void libpasscat::cat_pidgin_passwords(void) {
 
 	for (long i = 0; i != list->length; ++i) {
 
-		std::wcout << "protocol: " << list->item[i]->selectSingleNode("protocol")->text << std::endl;
-		std::wcout << "name: " << list->item[i]->selectSingleNode("name")->text << std::endl;
-		std::wcout << "password: " << list->item[i]->selectSingleNode("password")->text << std::endl;
-		std::wcout << "alias: " << list->item[i]->selectSingleNode("alias")->text << std::endl;
+		std::wcout << "Protocol: " << list->item[i]->selectSingleNode("protocol")->text << std::endl;
+		std::wcout << "Name: " << list->item[i]->selectSingleNode("name")->text << std::endl;
+		std::wcout << "Password: " << list->item[i]->selectSingleNode("password")->text << std::endl;
+		std::wcout << "Alias: " << list->item[i]->selectSingleNode("alias")->text << std::endl;
 		std::wcout << std::endl;
 	}
+}
+
+void libpasscat::cat_credmanager_passwords(void) {
+	DWORD count;
+	PCREDENTIALW *credentials;
+
+	if (!CredEnumerateW(NULL, CRED_ENUMERATE_ALL_CREDENTIALS, &count, &credentials)) {
+		return;
+	}
+
+	for (DWORD i = 0; i < count; ++i) {
+		DATA_BLOB DataIn;
+		DATA_BLOB DataOut;
+
+		if (credentials[i]->UserName != NULL && (credentials[i]->Type == CRED_TYPE_GENERIC || credentials[i]->Type == CRED_TYPE_DOMAIN_VISIBLE_PASSWORD)) {
+
+			if (credentials[i]->CredentialBlobSize < 200) {
+				std::wcout << "URL: " << credentials[i]->TargetName << std::endl;
+				std::wcout << "Username: " << credentials[i]->UserName << std::endl;
+				if (credentials[i]->CredentialBlobSize > 0) {
+					std::wcout << "Password: ";
+
+					for (DWORD j = 0; j < credentials[i]->CredentialBlobSize; j++) {
+						if (credentials[i]->CredentialBlob[j] != '\0') {
+							std::cout << credentials[i]->CredentialBlob[j];
+						}
+					}
+					std::wcout << std::endl;
+				}
+			}
+
+			std::wcout << std::endl;
+		}
+	}
+
+	CredFree(credentials);
 }
