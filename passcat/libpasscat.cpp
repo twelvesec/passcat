@@ -31,6 +31,7 @@
 #include "libpriv.h"
 #include "libsystem.h"
 #include "libwinscp.h"
+#include "libvaultie.h"
 #include <wincred.h>
 
 #define WLAN_API_VER	2
@@ -47,7 +48,10 @@
 bool libpasscat::initialized = false;
 
 void libpasscat::init(void) {
+	if (initialized) return;
+
 	libxml::init();
+	libvaultie::init();
 	initialized = true;
 }
 
@@ -55,6 +59,7 @@ void libpasscat::finalize(void) {
 	if (!initialized) return;
 
 	libxml::finalize();
+	libvaultie::finalize();
 	initialized = false;
 }
 
@@ -222,6 +227,8 @@ void libpasscat::cat_wifi_passwords(void) {
 }
 
 void libpasscat::cat_winscp_passwords(void) {
+	if (!initialized) return;
+
 	HKEY key;
 	DWORD useOfMasterPass;
 	DWORD count;
@@ -303,6 +310,8 @@ void libpasscat::cat_winscp_passwords(void) {
 }
 
 void libpasscat::cat_pidgin_passwords(void) {
+	if (!initialized) return;
+
 	std::wstring pidgin_path = libsystem::get_pidgin_path();
 	std::wstring accounts = pidgin_path + L"\\" + PIDGIN_FILE;
 
@@ -325,6 +334,8 @@ void libpasscat::cat_pidgin_passwords(void) {
 }
 
 void libpasscat::cat_credmanager_passwords(void) {
+	if (!initialized) return;
+
 	DWORD count;
 	PCREDENTIALW *credentials;
 
@@ -333,8 +344,6 @@ void libpasscat::cat_credmanager_passwords(void) {
 	}
 
 	for (DWORD i = 0; i < count; ++i) {
-		DATA_BLOB DataIn;
-		DATA_BLOB DataOut;
 
 		if (credentials[i]->UserName != NULL && (credentials[i]->Type == CRED_TYPE_GENERIC || credentials[i]->Type == CRED_TYPE_DOMAIN_VISIBLE_PASSWORD)) {
 
@@ -358,4 +367,10 @@ void libpasscat::cat_credmanager_passwords(void) {
 	}
 
 	CredFree(credentials);
+}
+
+void libpasscat::cat_vault_ie_passwords(void) {
+	if (!initialized) return;
+
+	libvaultie::print_vault_ie_passwords();
 }

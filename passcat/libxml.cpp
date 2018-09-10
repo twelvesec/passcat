@@ -31,6 +31,8 @@
 bool libxml::initialized = false;
 
 void libxml::init(void) {
+	if (initialized) return;
+
 	CoInitialize(NULL);
 	initialized = true;
 }

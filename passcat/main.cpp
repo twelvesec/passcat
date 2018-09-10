@@ -67,6 +67,12 @@ int main(int argc, char *argv[])
 	libpasscat::cat_credmanager_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
+	std::cout << "------------------------------------" << std::endl;
+	std::cout << "  Vault & IE Credentials" << std::endl;
+	std::cout << "------------------------------------" << std::endl << std::endl;
+	libpasscat::cat_vault_ie_passwords();
+	std::cout << "-------------------------------------------" << std::endl << std::endl;
+
 	libpasscat::finalize();
 
 	return 0;

@@ -24,14 +24,12 @@
 
 #pragma once
 
-namespace libpasscat {
+#include <Windows.h>
+
+namespace libvaultie {
 	extern bool initialized;
+	extern HMODULE hvaultLib;
 	void init(void);
-	void cat_filezilla_passwords(void);
-	void cat_wifi_passwords(void);
-	void cat_winscp_passwords(void);
-	void cat_pidgin_passwords(void);
-	void cat_credmanager_passwords(void);
-	void cat_vault_ie_passwords(void);
 	void finalize(void);
+	void print_vault_ie_passwords(void);
 }

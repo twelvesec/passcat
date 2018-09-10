@@ -123,6 +123,7 @@
     <ClCompile Include="libpasscat.cpp" />
     <ClCompile Include="libpriv.cpp" />
     <ClCompile Include="libsystem.cpp" />
+    <ClCompile Include="libvaultie.cpp" />
     <ClCompile Include="libwinscp.cpp" />
     <ClCompile Include="libxml.cpp" />
     <ClCompile Include="main.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="libpasscat.h" />
     <ClInclude Include="libpriv.h" />
     <ClInclude Include="libsystem.h" />
+    <ClInclude Include="libvaultie.h" />
     <ClInclude Include="libwinscp.h" />
     <ClInclude Include="libxml.h" />
   </ItemGroup>
