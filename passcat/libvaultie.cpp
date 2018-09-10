@@ -166,7 +166,7 @@ void libvaultie::print_vault_ie_passwords(void) {
 	LPGUID vaults;
 	HVAULT hVault;
 	PVOID items;
-	PVAULT_ITEM items8, pItem;
+	PVAULT_ITEM vaultItems, pVaultItems;
 
 	if (pVaultEnumerateVaults(NULL, &vaultsCounter, &vaults) != ERROR_SUCCESS) {
 		return;
@@ -178,20 +178,20 @@ void libvaultie::print_vault_ie_passwords(void) {
 
 			if (pVaultEnumerateItems(hVault, VAULT_ENUMERATE_ALL_ITEMS, &itemsCounter, &items) == ERROR_SUCCESS) {
 
-				items8 = (PVAULT_ITEM)items;
+				vaultItems = (PVAULT_ITEM)items;
 
 				for (DWORD j = 0; j < itemsCounter; j++) {
-					std::wcout << "URL: " << items8[j].Resource->data.String << std::endl;
-					std::wcout << "Username: " << items8[j].Identity->data.String << std::endl;
+					std::wcout << "URL: " << vaultItems[j].Resource->data.String << std::endl;
+					std::wcout << "Username: " << vaultItems[j].Identity->data.String << std::endl;
 
-					pItem = NULL;
+					pVaultItems = NULL;
 
-					if (pVaultGetItem(hVault, &items8[j].SchemaId, items8[j].Resource, items8[j].Identity, items8[j].PackageSid, NULL, 0, &pItem) == 0) {
-						if (pItem->Authenticator != NULL && pItem->Authenticator->data.String != NULL) {
-							std::wcout << "Password: " << pItem->Authenticator->data.String << std::endl;
+					if (pVaultGetItem(hVault, &vaultItems[j].SchemaId, vaultItems[j].Resource, vaultItems[j].Identity, vaultItems[j].PackageSid, NULL, 0, &pVaultItems) == 0) {
+						if (pVaultItems->Authenticator != NULL && pVaultItems->Authenticator->data.String != NULL) {
+							std::wcout << "Password: " << pVaultItems->Authenticator->data.String << std::endl;
 						}
 
-						pVaultFree(pItem);
+						pVaultFree(pVaultItems);
 					}
 
 					std::wcout << std::endl;
