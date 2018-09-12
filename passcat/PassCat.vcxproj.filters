@@ -39,6 +39,12 @@
     <ClCompile Include="libvaultie.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="libchrome.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sqlite3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libpasscat.h">
@@ -63,6 +69,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libvaultie.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="libchrome.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

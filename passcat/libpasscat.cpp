@@ -32,6 +32,8 @@
 #include "libsystem.h"
 #include "libwinscp.h"
 #include "libvaultie.h"
+#include "libchrome.h"
+
 #include <wincred.h>
 
 #define WLAN_API_VER	2
@@ -136,9 +138,6 @@ void libpasscat::cat_wifi_passwords(void) {
 				if (wcscmp(list->item[0]->selectSingleNode("pf:useOneX")->text, L"false") == 0 && wcscmp(list->item[0]->selectSingleNode("pf:authentication")->text, L"open") != 0)
 				{
 					list = libxml::select_by_path(profileXML, WIFI_XPATH_TWO);
-					//std::wcout << "Key Type: " << list->item[0]->selectSingleNode("pf:keyType")->text << std::endl;
-					//if (wcscmp(list->item[0]->selectSingleNode("pf:protected")->text, L"true") == 0) {
-
 					LPWSTR text = _bstr_t(list->item[0]->selectSingleNode("pf:keyMaterial")->text);
 
 					if ((procID = libsystem::GetProcessIdByProcessName(L"winlogon.exe")) == 0) {
@@ -186,9 +185,6 @@ void libpasscat::cat_wifi_passwords(void) {
 							if (CryptUnprotectData(&DataIn, NULL, NULL, NULL, NULL, 0, &DataOut)) {
 								std::cout << "Password: " << DataOut.pbData << std::endl;
 							}
-						}
-						else {
-							std::cout << GetLastError() << std::endl;
 						}
 					}
 					else {
@@ -373,4 +369,10 @@ void libpasscat::cat_vault_ie_passwords(void) {
 	if (!initialized) return;
 
 	libvaultie::print_vault_ie_passwords();
+}
+
+void libpasscat::cat_chrome_passwords(void) {
+	if (!initialized) return;
+
+	libchrome::print_chrome_passwords();
 }

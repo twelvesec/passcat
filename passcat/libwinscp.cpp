@@ -24,7 +24,7 @@
 
 #include "libwinscp.h"
 
-int libwinscp::decrypt_char(const char *hash, char **newhash, size_t *size) {
+static int _decrypt_char(const char *hash, char **newhash, size_t *size) {
 	unsigned char hex_flag = 0xA3;
 	char charset[17] = "0123456789ABCDEF";
 	int unpack1, unpack2, result = 0;
@@ -74,7 +74,7 @@ std::string libwinscp::decrypt_password(const char *username, const char *hostna
 	std::string result;
 	std::string key;
 
-	flag = decrypt_char(hash, &newhash, &currenthashlen);
+	flag = _decrypt_char(hash, &newhash, &currenthashlen);
 
 	currenthash = (char*)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, currenthashlen);
 	if (currenthash == NULL) {
@@ -93,7 +93,7 @@ std::string libwinscp::decrypt_password(const char *username, const char *hostna
 	}
 
 	if (flag == hex_flag) {
-		decrypt_char(currenthash, &newhash, &currenthashlen);
+		_decrypt_char(currenthash, &newhash, &currenthashlen);
 		if (currenthash) {
 			HeapFree(GetProcessHeap(), 0, currenthash);
 			currenthash = NULL;
@@ -115,7 +115,7 @@ std::string libwinscp::decrypt_password(const char *username, const char *hostna
 			newhash = NULL;
 		}
 
-		length = decrypt_char(currenthash, &newhash, &currenthashlen);
+		length = _decrypt_char(currenthash, &newhash, &currenthashlen);
 		if (currenthash) {
 			HeapFree(GetProcessHeap(), 0, currenthash);
 			currenthash = NULL;
@@ -141,7 +141,7 @@ std::string libwinscp::decrypt_password(const char *username, const char *hostna
 		length = flag;
 	}
 
-	ldel = decrypt_char(currenthash, &newhash, &currenthashlen) * 2;
+	ldel = _decrypt_char(currenthash, &newhash, &currenthashlen) * 2;
 
 	if (currenthash) {
 		HeapFree(GetProcessHeap(), 0, currenthash);
@@ -193,7 +193,7 @@ std::string libwinscp::decrypt_password(const char *username, const char *hostna
 	}
 
 	for (int i = 0;i < length;i++) {
-		tempresult = decrypt_char(currenthash, &newhash, &currenthashlen);
+		tempresult = _decrypt_char(currenthash, &newhash, &currenthashlen);
 		if (currenthash) {
 			HeapFree(GetProcessHeap(), 0, currenthash);
 			currenthash = NULL;

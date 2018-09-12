@@ -32,7 +32,7 @@
 #pragma comment (lib, "Shlwapi.lib")
 #include <Shlwapi.h>
 
-void _print_passwords(std::wstring filename, std::wstring XPATH) {
+static void _print_passwords(std::wstring filename, std::wstring XPATH) {
 
 	MSXML::IXMLDOMNodeListPtr list = libxml::select_by_path(filename, XPATH);
 
@@ -69,19 +69,19 @@ void _print_passwords(std::wstring filename, std::wstring XPATH) {
 }
 
 void libfilezilla::print_filezilla_passwords(void) {
-	std::wstring filezilla_path = libsystem::get_filezilla_path();
-	std::wstring filezilla_recent_servers = filezilla_path + L"\\" + FILEZILLA_FILE_ONE;
-	std::wstring filezilla_site_manager = filezilla_path + L"\\" + FILEZILLA_FILE_TWO;
+	std::wstring path = libsystem::get_filezilla_path();
+	std::wstring recent_servers = path + L"\\" + FILEZILLA_FILE_ONE;
+	std::wstring site_manager = path + L"\\" + FILEZILLA_FILE_TWO;
 
-	if (!PathFileExistsW(filezilla_recent_servers.c_str())) {
+	if (!PathFileExistsW(recent_servers.c_str())) {
 		return;
 	}
 
-	_print_passwords(filezilla_recent_servers, FILEZILLA_XPATH_ONE);
+	_print_passwords(recent_servers, FILEZILLA_XPATH_ONE);
 
-	if (!PathFileExistsW(filezilla_site_manager.c_str())) {
+	if (!PathFileExistsW(site_manager.c_str())) {
 		return;
 	}
 
-	_print_passwords(filezilla_site_manager, FILEZILLA_XPATH_TWO);
+	_print_passwords(site_manager, FILEZILLA_XPATH_TWO);
 }

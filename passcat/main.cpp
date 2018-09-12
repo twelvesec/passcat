@@ -43,11 +43,13 @@ int main(int argc, char *argv[])
 	libpasscat::cat_filezilla_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
+
 	std::cout << "-------------------------" << std::endl;
 	std::cout << "  WiFi Credentials" << std::endl;
 	std::cout << "-------------------------" << std::endl << std::endl;
 	libpasscat::cat_wifi_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
+
 
 	std::cout << "-------------------------" << std::endl;
 	std::cout << "  WinSCP Credentials" << std::endl;
@@ -55,11 +57,13 @@ int main(int argc, char *argv[])
 	libpasscat::cat_winscp_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
+
 	std::cout << "-------------------------" << std::endl;
 	std::cout << "  Pidgin Credentials" << std::endl;
 	std::cout << "-------------------------" << std::endl << std::endl;
 	libpasscat::cat_pidgin_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
+
 
 	std::cout << "------------------------------------" << std::endl;
 	std::cout << "  Credential Manager Credentials" << std::endl;
@@ -67,10 +71,18 @@ int main(int argc, char *argv[])
 	libpasscat::cat_credmanager_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
+
 	std::cout << "------------------------------------" << std::endl;
 	std::cout << "  Vault & IE Credentials" << std::endl;
 	std::cout << "------------------------------------" << std::endl << std::endl;
 	libpasscat::cat_vault_ie_passwords();
+	std::cout << "-------------------------------------------" << std::endl << std::endl;
+
+
+	std::cout << "------------------------------------" << std::endl;
+	std::cout << "  Google Chrome Credentials" << std::endl;
+	std::cout << "------------------------------------" << std::endl << std::endl;
+	libpasscat::cat_chrome_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
 	libpasscat::finalize();

