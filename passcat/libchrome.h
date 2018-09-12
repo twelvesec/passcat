@@ -24,8 +24,8 @@
 
 #pragma once
 
+#include <string>
 
 namespace libchrome {
-
-	void print_chrome_passwords(void);
+	void print_chrome_passwords(std::wstring path, std::wstring pattern, std::wstring config, std::string sqlQuery);
 }

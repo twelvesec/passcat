@@ -35,5 +35,6 @@ namespace libsystem {
 	BOOL generate_temp_filename(LPCWSTR prefix, LPWSTR filename);
 	BOOL dump_to_file(LPCWSTR filename, LPWSTR data);
 	DWORD GetProcessIdByProcessName(LPCWSTR pszProcessName);
-	std::wstring get_chrome_path(void);
+	std::wstring get_chrome_path(std::wstring folder);
+	std::wstring get_opera_path(std::wstring folder);
 }

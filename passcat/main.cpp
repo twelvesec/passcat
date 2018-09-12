@@ -85,6 +85,13 @@ int main(int argc, char *argv[])
 	libpasscat::cat_chrome_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
+
+	std::cout << "------------------------------------" << std::endl;
+	std::cout << "  Opera Credentials" << std::endl;
+	std::cout << "------------------------------------" << std::endl << std::endl;
+	libpasscat::cat_opera_passwords();
+	std::cout << "-------------------------------------------" << std::endl << std::endl;
+
 	libpasscat::finalize();
 
 	return 0;

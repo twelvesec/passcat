@@ -98,11 +98,18 @@ std::wstring libsystem::get_pidgin_path(void) {
 	return path + PIDGIN_FOLDER;
 }
 
-std::wstring libsystem::get_chrome_path(void) {
+std::wstring libsystem::get_chrome_path(std::wstring folder) {
 	PWSTR localappdata[MAX_PATH] = { 0 };
 	get_localappdata_path(localappdata);
 	std::wstring path(*localappdata);
-	return path + CHROME_FOLDER;
+	return path + folder;
+}
+
+std::wstring libsystem::get_opera_path(std::wstring folder) {
+	PWSTR roaming[MAX_PATH] = { 0 };
+	get_appdata_path(roaming);
+	std::wstring path(*roaming);
+	return path + folder;
 }
 
 BOOL libsystem::generate_temp_filename(LPCWSTR prefix, LPWSTR filename) {

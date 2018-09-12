@@ -45,7 +45,7 @@ static int _callback(void *NotUsed, int argc, char **argv, char **azColName) {
 	return 0;
 }
 
-static void _print_passwords(std::wstring filename) {
+static void _print_passwords(std::wstring filename, std::wstring folder, std::string sqlQuery) {
 	WCHAR tempfile[MAX_PATH] = { 0 };
 	int rc;
 	char *zErrMsg = 0;
@@ -57,7 +57,7 @@ static void _print_passwords(std::wstring filename) {
 	sqlite3_blob *blob;
 	void *block = 0;
 
-	std::wstring path = libsystem::get_chrome_path();
+	std::wstring path = libsystem::get_chrome_path(folder);
 	if (!libsystem::generate_temp_filename(L"psc", tempfile)) {
 		return;
 	}
@@ -72,7 +72,7 @@ static void _print_passwords(std::wstring filename) {
 		return;
 	}
 
-	if ((rc = sqlite3_get_table(db, CHROME_SQL_QUERY, &results, &rows, &columns, &zErrMsg)) != SQLITE_OK) {
+	if ((rc = sqlite3_get_table(db, sqlQuery.c_str(), &results, &rows, &columns, &zErrMsg)) != SQLITE_OK) {
 		sqlite3_free(zErrMsg);
 		sqlite3_close(db);
 		return;
@@ -131,12 +131,32 @@ static void _print_passwords(std::wstring filename) {
 	DeleteFileW(tempfile);
 }
 
-void libchrome::print_chrome_passwords(void) {
-	std::wstring path = libsystem::get_chrome_path();
-	std::wstring localstate = path + L"\\" + CHROME_CONFIG_FILE;
-
+static void _handle_profile(std::wstring pattern, std::wstring folder, std::wstring searchpath, std::string sqlQuery) {
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 	WIN32_FIND_DATAW ffd;
+
+	if ((hFind = FindFirstFileW(searchpath.c_str(), &ffd)) == INVALID_HANDLE_VALUE) {
+		return;
+	}
+
+	do {
+		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+			continue;
+		}
+		else {
+			std::wstring filename(ffd.cFileName);
+			std::transform(filename.begin(), filename.end(), filename.begin(), ::tolower);
+			if (filename.find(pattern) != std::wstring::npos) {
+				_print_passwords(folder + L"\\" + ffd.cFileName, folder, sqlQuery);
+			}
+		}
+	} while (FindNextFileW(hFind, &ffd) != 0);
+
+	FindClose(hFind);
+}
+
+void libchrome::print_chrome_passwords(std::wstring path, std::wstring pattern, std::wstring config, std::string sqlQuery) {
+	std::wstring localstate = path + L"\\" + config;
 
 	if (!PathFileExistsW(localstate.c_str())) {
 		return;
@@ -158,25 +178,12 @@ void libchrome::print_chrome_passwords(void) {
 				std::wstring profilePath = path + L"\\" + std::wstring(temp.begin(), temp.end());
 				std::wstring searchProfilePath = path + L"\\" + std::wstring(temp.begin(), temp.end()) + L"\\*";
 
-				if ((hFind = FindFirstFileW(searchProfilePath.c_str(), &ffd)) == INVALID_HANDLE_VALUE) {
-					continue;
-				}
-
-				do {
-					if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-						continue;
-					}
-					else {
-						std::wstring filename(ffd.cFileName);
-						std::transform(filename.begin(), filename.end(), filename.begin(), ::tolower);
-						if (filename.find(CHROME_FILES_SEARCH) != std::wstring::npos) {
-							_print_passwords(profilePath + L"\\" + ffd.cFileName);
-						}
-					}
-				} while (FindNextFileW(hFind, &ffd) != 0);
-
-				FindClose(hFind);
+				_handle_profile(pattern, profilePath, searchProfilePath, sqlQuery);
 			}
 		}
+	}
+	else {
+		std::wstring searchFolderPath = path + L"\\*";
+		_handle_profile(pattern, path, searchFolderPath, sqlQuery);
 	}
 }

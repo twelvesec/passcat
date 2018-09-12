@@ -374,5 +374,13 @@ void libpasscat::cat_vault_ie_passwords(void) {
 void libpasscat::cat_chrome_passwords(void) {
 	if (!initialized) return;
 
-	libchrome::print_chrome_passwords();
+	std::wstring path = libsystem::get_chrome_path(CHROME_FOLDER);
+	libchrome::print_chrome_passwords(path, CHROME_FILES_SEARCH, CHROME_CONFIG_FILE, CHROME_SQL_QUERY);
+}
+
+void libpasscat::cat_opera_passwords(void) {
+	if (!initialized) return;
+
+	std::wstring path = libsystem::get_opera_path(OPERA_FOLDER);
+	libchrome::print_chrome_passwords(path, OPERA_FILES_SEARCH, OPERA_CONFIG_FILE, OPERA_SQL_QUERY);
 }
