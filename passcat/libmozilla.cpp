@@ -140,7 +140,7 @@ static void _handle_credentials(std::string hostname, std::string encUsername, s
 	plaintext = NULL;
 	SECITEMZfreeItem(&request, PR_FALSE);
 	SECITEMZfreeItem(&reply, PR_FALSE);
-
+	
 	//***************
 
 	adjust = 0;
@@ -307,7 +307,6 @@ void libmozilla::init(std::wstring nss3Dll, std::wstring mozglueDll) {
 	PK11CheckUserPassword = (PK11_CheckUserPasswordFunc)GetProcAddress(hnss3Lib, "PK11_CheckUserPassword");
 	PK11Authenticate = (PK11_AuthenticateFunc)GetProcAddress(hnss3Lib, "PK11_Authenticate");
 	PLBase64Decode = (PL_Base64DecodeFunc)GetProcAddress(hnss3Lib, "PL_Base64Decode");
-	PK11SDRDecrypt = (PK11_SDRDecryptFunc)GetProcAddress(hnss3Lib, "PK11SDR_Decrypt");
 	PK11SDRDecrypt = (PK11_SDRDecryptFunc)GetProcAddress(hnss3Lib, "PK11SDR_Decrypt");
 	SECITEMZfreeItem = (SECITEM_ZfreeItemFunc)GetProcAddress(hnss3Lib, "SECITEM_ZfreeItem");
 
