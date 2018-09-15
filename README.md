@@ -35,6 +35,6 @@ Written by:
 
 ### Credits
 
-* [LaZagne](https://github.com/AleassandroZ/LaZagne)
+* [LaZagne](https://github.com/AlessandroZ/LaZagne)
 
 ---
