@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	std::cout << "  PassCat v." << VERSION << " - Passwords Recovery Tool" << std::endl;
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
-	libpasscat::init(FIREFOX_DLL_NSS3, FIREFOX_DLL_MOZGLUE);
+	libpasscat::init();
 
 	std::cout << "-------------------------" << std::endl;
 	std::cout << "  FileZilla Credentials" << std::endl;
@@ -98,6 +98,13 @@ int main(int argc, char *argv[])
 	std::cout << "  Firefox Credentials" << std::endl;
 	std::cout << "------------------------------------" << std::endl << std::endl;
 	libpasscat::cat_mozilla_passwords();
+	std::cout << "-------------------------------------------" << std::endl << std::endl;
+
+
+	std::cout << "------------------------------------" << std::endl;
+	std::cout << "  Thunderbird Credentials" << std::endl;
+	std::cout << "------------------------------------" << std::endl << std::endl;
+	libpasscat::cat_thunderbird_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
 	libpasscat::finalize();

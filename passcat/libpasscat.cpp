@@ -50,12 +50,12 @@
 
 bool libpasscat::initialized = false;
 
-void libpasscat::init(std::wstring nss3Dll, std::wstring mozglueDll) {
+void libpasscat::init(void) {
 	if (initialized) return;
 
 	libxml::init();
 	libvaultie::init();
-	libmozilla::init(nss3Dll, mozglueDll);
+	//libmozilla::init(nss3Dll, mozglueDll);
 
 	initialized = true;
 }
@@ -65,7 +65,7 @@ void libpasscat::finalize(void) {
 
 	libxml::finalize();
 	libvaultie::finalize();
-	libmozilla::finalize();
+	//libmozilla::finalize();
 
 	initialized = false;
 }
@@ -388,5 +388,11 @@ void libpasscat::cat_opera_passwords(void) {
 void libpasscat::cat_mozilla_passwords(void) {
 	if (!initialized) return;
 
-	libmozilla::print_firefox_passwords(libsystem::get_firefox_path(FIREFOX_FOLDER), FIREFOX_FILE_TWO);
+	libmozilla::print_firefox_passwords(libsystem::get_firefox_path(FIREFOX_FOLDER), FIREFOX_FILE, FIREFOX_DLL_NSS3, FIREFOX_DLL_MOZGLUE);
+}
+
+void libpasscat::cat_thunderbird_passwords(void) {
+	if (!initialized) return;
+
+	libmozilla::print_firefox_passwords(libsystem::get_firefox_path(THUNDERBIRD_FOLDER), THUNDERBIRD_FILE, THUNDERBIRD_DLL_NSS3, THUNDERBIRD_DLL_MOZGLUE);
 }

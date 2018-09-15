@@ -31,7 +31,7 @@ Written by:
 * Google Chrome Browser
 * Opera Browser
 * Firefox Browser
-* Thunderbird Email Client
+* Thunderbird Email Client (you have to build PassCat for Windows 10 x86. Keep in mind that using the x86 version you will not be able to retrieve Firefox passwords)
 
 ### Credits
 
