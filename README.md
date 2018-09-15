@@ -1,4 +1,4 @@
-## passcat
+## PassCat
 
 Passwords Recovery Tool
 
