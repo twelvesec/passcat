@@ -120,28 +120,14 @@ void libvaultie::init(void) {
 		return;
 	}
 
-	if (!(pVaultEnumerateItems = (VaultEnumerateItems)GetProcAddress(hvaultLib, "VaultEnumerateItems"))) {
-		FreeLibrary(hvaultLib);
-		return;
-	}
-	if (!(pVaultEnumerateVaults = (VaultEnumerateVaults)GetProcAddress(hvaultLib, "VaultEnumerateVaults"))) {
-		FreeLibrary(hvaultLib);
-		return;
-	}
-	if (!(pVaultFree = (VaultFree)GetProcAddress(hvaultLib, "VaultFree"))) {
-		FreeLibrary(hvaultLib);
-		return;
-	}
-	if (!(pVaultOpenVault = (VaultOpenVault)GetProcAddress(hvaultLib, "VaultOpenVault"))) {
-		FreeLibrary(hvaultLib);
-		return;
-	}
-	if (!(pVaultCloseVault = (VaultCloseVault)GetProcAddress(hvaultLib, "VaultCloseVault"))) {
-		FreeLibrary(hvaultLib);
-		return;
-	}
+	pVaultEnumerateItems = (VaultEnumerateItems)GetProcAddress(hvaultLib, "VaultEnumerateItems");
+	pVaultEnumerateVaults = (VaultEnumerateVaults)GetProcAddress(hvaultLib, "VaultEnumerateVaults");
+	pVaultFree = (VaultFree)GetProcAddress(hvaultLib, "VaultFree");
+	pVaultOpenVault = (VaultOpenVault)GetProcAddress(hvaultLib, "VaultOpenVault");
+	pVaultCloseVault = (VaultCloseVault)GetProcAddress(hvaultLib, "VaultCloseVault");
+	pVaultGetItem = (PVAULTGETITEM)GetProcAddress(hvaultLib, "VaultGetItem");
 
-	if (!(pVaultGetItem = (PVAULTGETITEM)GetProcAddress(hvaultLib, "VaultGetItem"))) {
+	if (!pVaultEnumerateItems || !pVaultEnumerateVaults || !pVaultFree || !pVaultOpenVault || !pVaultCloseVault || !pVaultGetItem) {
 		FreeLibrary(hvaultLib);
 		return;
 	}

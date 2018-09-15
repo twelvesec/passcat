@@ -37,7 +37,6 @@ static int _decrypt_char(const char *hash, char **newhash, size_t *size) {
 			return result;
 		}
 		unpack1 = (int)(temp - charset);
-
 		unpack1 <<= 4;
 
 		temp = strchr(charset, hash[1]);
@@ -45,7 +44,6 @@ static int _decrypt_char(const char *hash, char **newhash, size_t *size) {
 			return result;
 		}
 		unpack2 = (int)(temp - charset);
-
 		result = ~((unpack1 + unpack2) ^ hex_flag) & 0xff;
 
 		hashLen = (strlen(hash) - 2) + 1;
@@ -169,6 +167,7 @@ std::string libwinscp::decrypt_password(const char *username, const char *hostna
 	if (newhash == NULL) {
 		return "";
 	}
+
 	strcpy_s(newhash, hashLen, std::string(currenthash).substr(ldel, strlen(currenthash)).c_str());
 	if (currenthash) {
 		HeapFree(GetProcessHeap(), 0, currenthash);

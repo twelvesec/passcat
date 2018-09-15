@@ -33,6 +33,7 @@
 #include "libwinscp.h"
 #include "libvaultie.h"
 #include "libchrome.h"
+#include "libmozilla.h"
 
 #include <wincred.h>
 
@@ -49,11 +50,13 @@
 
 bool libpasscat::initialized = false;
 
-void libpasscat::init(void) {
+void libpasscat::init(std::wstring nss3Dll, std::wstring mozglueDll) {
 	if (initialized) return;
 
 	libxml::init();
 	libvaultie::init();
+	libmozilla::init(nss3Dll, mozglueDll);
+
 	initialized = true;
 }
 
@@ -62,6 +65,8 @@ void libpasscat::finalize(void) {
 
 	libxml::finalize();
 	libvaultie::finalize();
+	libmozilla::finalize();
+
 	initialized = false;
 }
 
@@ -190,9 +195,8 @@ void libpasscat::cat_wifi_passwords(void) {
 					else {
 						std::cout << "Password: " << "<encrypted>" << std::endl;
 					}
-					//}
 				}
-			}//WlanGetProfile
+			}
 
 			std::wcout << std::endl;
 			if (procToken) {
@@ -311,8 +315,6 @@ void libpasscat::cat_pidgin_passwords(void) {
 	std::wstring pidgin_path = libsystem::get_pidgin_path();
 	std::wstring accounts = pidgin_path + L"\\" + PIDGIN_FILE;
 
-	//std::wcout << accounts << std::endl;
-
 	if (!PathFileExistsW(accounts.c_str())) {
 		return;
 	}
@@ -374,13 +376,17 @@ void libpasscat::cat_vault_ie_passwords(void) {
 void libpasscat::cat_chrome_passwords(void) {
 	if (!initialized) return;
 
-	std::wstring path = libsystem::get_chrome_path(CHROME_FOLDER);
-	libchrome::print_chrome_passwords(path, CHROME_FILES_SEARCH, CHROME_CONFIG_FILE, CHROME_SQL_QUERY);
+	libchrome::print_chrome_passwords(libsystem::get_chrome_path(CHROME_FOLDER), CHROME_FILES_SEARCH, CHROME_CONFIG_FILE, CHROME_SQL_QUERY);
 }
 
 void libpasscat::cat_opera_passwords(void) {
 	if (!initialized) return;
 
-	std::wstring path = libsystem::get_opera_path(OPERA_FOLDER);
-	libchrome::print_chrome_passwords(path, OPERA_FILES_SEARCH, OPERA_CONFIG_FILE, OPERA_SQL_QUERY);
+	libchrome::print_chrome_passwords(libsystem::get_opera_path(OPERA_FOLDER), OPERA_FILES_SEARCH, OPERA_CONFIG_FILE, OPERA_SQL_QUERY);
+}
+
+void libpasscat::cat_mozilla_passwords(void) {
+	if (!initialized) return;
+
+	libmozilla::print_firefox_passwords(libsystem::get_firefox_path(FIREFOX_FOLDER), FIREFOX_FILE_TWO);
 }

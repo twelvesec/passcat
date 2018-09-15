@@ -26,8 +26,9 @@
 #include <iostream>
 
 #include "libpasscat.h"
+#include "config.h"
 
-#define VERSION "0.1"
+#define VERSION "1.0"
 
 int main(int argc, char *argv[])
 {
@@ -35,7 +36,7 @@ int main(int argc, char *argv[])
 	std::cout << "  PassCat v." << VERSION << " - Passwords Recovery Tool" << std::endl;
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
-	libpasscat::init();
+	libpasscat::init(FIREFOX_DLL_NSS3, FIREFOX_DLL_MOZGLUE);
 
 	std::cout << "-------------------------" << std::endl;
 	std::cout << "  FileZilla Credentials" << std::endl;
@@ -90,6 +91,13 @@ int main(int argc, char *argv[])
 	std::cout << "  Opera Credentials" << std::endl;
 	std::cout << "------------------------------------" << std::endl << std::endl;
 	libpasscat::cat_opera_passwords();
+	std::cout << "-------------------------------------------" << std::endl << std::endl;
+
+
+	std::cout << "------------------------------------" << std::endl;
+	std::cout << "  Firefox Credentials" << std::endl;
+	std::cout << "------------------------------------" << std::endl << std::endl;
+	libpasscat::cat_mozilla_passwords();
 	std::cout << "-------------------------------------------" << std::endl << std::endl;
 
 	libpasscat::finalize();

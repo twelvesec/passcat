@@ -112,6 +112,13 @@ std::wstring libsystem::get_opera_path(std::wstring folder) {
 	return path + folder;
 }
 
+std::wstring libsystem::get_firefox_path(std::wstring folder) {
+	PWSTR roaming[MAX_PATH] = { 0 };
+	get_appdata_path(roaming);
+	std::wstring path(*roaming);
+	return path + folder;
+}
+
 BOOL libsystem::generate_temp_filename(LPCWSTR prefix, LPWSTR filename) {
 	WCHAR temp[MAX_PATH] = { 0 };
 

@@ -24,7 +24,6 @@
 
 #include "libchrome.h"
 #include "libsystem.h"
-#include "config.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -183,7 +182,6 @@ void libchrome::print_chrome_passwords(std::wstring path, std::wstring pattern, 
 		}
 	}
 	else {
-		std::wstring searchFolderPath = path + L"\\*";
-		_handle_profile(pattern, path, searchFolderPath, sqlQuery);
+		_handle_profile(pattern, path, path + L"\\*", sqlQuery);
 	}
 }
