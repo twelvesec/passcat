@@ -19,6 +19,12 @@ Written by:
 
 ---
 
+### Compilation
+
+* Visual Studio 2017 (Choose Release Configuration and x64 Platform)
+
+---
+
 ### Supported software
 
 * FileZilla
