@@ -52,7 +52,7 @@ Written by:
 * Open the "cmd.exe" window and change the current directory. e.g.:
 
 ```
-cd "C:\[path]\[to]\passcat\x64\Release\PassCat.exe"
+cd "C:\[path]\[to]\passcat\x64\Release\"
 ```
 
 * Execute PassCat
