@@ -49,7 +49,7 @@ Written by:
 
 * Some passwords such as WiFi credentials can only be retrieved by running PassCat as an administrator, so you have to open two command lines, one as an administrator and another one as a normal user.
 * Copy the executable file to a more convenient location and change your current directory to this location.
-* Open the "cmd.exe" window and change the current directory.
+* Open the "cmd.exe" window and change the current directory. e.g.:
 
 ```
 cd "C:\[path]\[to]\passcat\x64\Release\PassCat.exe"
