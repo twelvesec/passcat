@@ -1,6 +1,6 @@
 ## PassCat
 
-Passwords Recovery Tool
+**Passwords Recovery Tool**
 
 PassCat is an open source Windows native C++ application capable of retrieving the passwords stored locally on a computer.
 
@@ -19,12 +19,6 @@ Written by:
 
 ---
 
-### Compilation
-
-* Visual Studio 2017 (Choose Release Configuration and x64 Platform)
-
----
-
 ### Supported software
 
 * FileZilla
@@ -38,6 +32,36 @@ Written by:
 * Opera Browser
 * Firefox Browser
 * Thunderbird Email Client (you have to build PassCat for Windows 10 x86. Keep in mind that using the x86 version you will not be able to retrieve Firefox passwords)
+
+---
+
+### Build Instructions
+
+* Download Visual Studio 2017 Community Edition.
+* Open solution file ("PassCat.sln").
+* Choose "Release" option from the dropdown menu in the configuration manager and "x64" Platform.
+* Select "Build" -> "Build Solution" from the menu or prees the "F6" keyboard shortcut.
+* Executable location: "C:\[path]\[to]\passcat\x64\Release\PassCat.exe"
+
+---
+
+### Usage
+
+* Some passwords such as WiFi credentials can only be retrieved by running PassCat as an administrator, so you have to open two command lines. One as an administrator and another one as normal user.
+* Copy the executable file to a more convenient location and change your current directory to this location.
+* Open the "cmd.exe" window and change the current directory.
+
+```
+cd "C:\[path]\[to]\passcat\x64\Release\PassCat.exe"
+```
+
+* Execute PassCat
+
+```
+.\PassCat.exe
+```
+
+---
 
 ### Credits
 
