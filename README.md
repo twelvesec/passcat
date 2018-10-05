@@ -2,7 +2,7 @@
 
 **Passwords Recovery Tool**
 
-PassCat is an open source Windows native C++ application capable of retrieving the passwords stored locally on a computer.
+PassCat is an open source Windows native C/C++ application capable of retrieving the passwords stored locally on a computer.
 
 *For a full list of our tools, please visit our website https://www.twelvesec.com/*
 
