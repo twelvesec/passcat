@@ -70,16 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)rapidjson;$(ProjectDir)nss;$(ProjectDir)nss\obsolete;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)rapidjson;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)rapidjson;$(ProjectDir)nss;$(ProjectDir)nss\obsolete;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)rapidjson;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)rapidjson;$(ProjectDir)nss;$(ProjectDir)nss\obsolete;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)rapidjson;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)rapidjson;$(ProjectDir)nss;$(ProjectDir)nss\obsolete;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)rapidjson;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
