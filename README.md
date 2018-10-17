@@ -65,6 +65,8 @@ cd "C:\[path]\[to]\passcat\x64\Release\"
 
 ### Credits
 
+* [sqlite-amalgamation](https://www.sqlite.org/download.html)
+* [rapidjson](https://github.com/Tencent/rapidjson)
 * [LaZagne](https://github.com/AlessandroZ/LaZagne)
 
 ---
