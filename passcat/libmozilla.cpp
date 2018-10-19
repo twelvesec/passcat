@@ -212,6 +212,11 @@ static void _print_passwords(std::wstring profileFolder, std::wstring signons) {
 	}
 
 	std::ifstream ifs(signonsJson);
+	if (!ifs) {
+		PK11FreeSlot(slot);
+		NSSShutdown();
+		return;
+	}
 	std::string content((std::istreambuf_iterator<char>(ifs)),
 		(std::istreambuf_iterator<char>()));
 
