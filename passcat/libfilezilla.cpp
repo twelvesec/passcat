@@ -45,7 +45,11 @@ static void _print_passwords(std::wstring filename, std::wstring XPATH) {
 		BYTE* decoded = 0;
 		DWORD decodedLen = 0;
 
-		if (!CryptStringToBinaryW(list->item[i]->selectSingleNode("Pass")->text, 0, CRYPT_STRING_BASE64, NULL, &decodedLen, NULL, NULL)) {
+		if (list->item[i]->selectSingleNode("Pass") == NULL) {
+			std::wcout << std::endl;
+			continue;
+		}
+		else if (!CryptStringToBinaryW(list->item[i]->selectSingleNode("Pass")->text, 0, CRYPT_STRING_BASE64, NULL, &decodedLen, NULL, NULL)) {
 			std::wcout << std::endl;
 			continue;
 		}

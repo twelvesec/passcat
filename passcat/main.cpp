@@ -28,7 +28,7 @@
 #include "libpasscat.h"
 #include "config.h"
 
-#define VERSION "1.0"
+#define VERSION "1.1"
 
 int main(int argc, char *argv[])
 {
