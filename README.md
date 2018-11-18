@@ -41,7 +41,7 @@ Written by:
 * Open solution file ("PassCat.sln").
 * Choose "Release" option from the dropdown menu in the configuration manager and "x64" Platform.
 * Select "Build" -> "Build Solution" from the menu or press the "F6" keyboard shortcut.
-* Executable location: "C:\[path]\[to]\passcat\x64\Release\PassCat.exe"
+* Executable location: "C:\\[path]\[to]\passcat\x64\Release\PassCat.exe"
 
 ---
 

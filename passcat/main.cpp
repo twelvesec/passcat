@@ -24,17 +24,28 @@
 
 #include <windows.h>
 #include <iostream>
-
+using namespace std;
 #include "libpasscat.h"
 #include "config.h"
 
-#define VERSION "1.1"
+#define VERSION "1.2"
 
 int main(int argc, char *argv[])
 {
-	std::cout << std::endl << "-------------------------------------------" << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl <<
+		R"(___________              .__                _________              )" << std::endl <<
+		R"(\__    ___/_  _  __ ____ |  |___  __ ____  /   _____/ ____   ____  )" << std::endl <<
+		R"(  |    |  \ \/ \/ // __ \|  |\  \/ // __ \ \_____  \_/ __ \_/ ___\ )" << std::endl <<
+		R"(  |    |   \     /\  ___/|  |_\   /\  ___/ /        \  ___/\  \___ )" << std::endl <<
+		R"(  |____|    \/\_/  \___  >____/\_/  \___  >_______  /\___  >\___  >)" << std::endl <<
+		R"(                       \/               \/        \/     \/     \/ )" << std::endl <<
+		std::endl;
+	std::cout << "----------------------------------------------------------------" << std::endl;
 	std::cout << "  PassCat v." << VERSION << " - Passwords Recovery Tool" << std::endl;
-	std::cout << "-------------------------------------------" << std::endl << std::endl;
+	std::cout << "  PassCat is an open source tool licensed under GPLv3." << std::endl;
+	std::cout << "  Please visit https://github.com/twelvesec/passcat for more.." << std::endl;
+	std::cout << "----------------------------------------------------------------" << std::endl << std::endl;
 
 	libpasscat::init();
 
