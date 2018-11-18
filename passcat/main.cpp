@@ -28,7 +28,7 @@ using namespace std;
 #include "libpasscat.h"
 #include "config.h"
 
-#define VERSION "1.2"
+#define VERSION "1.2.1"
 
 int main(int argc, char *argv[])
 {
