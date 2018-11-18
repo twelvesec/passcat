@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
 	std::cout << "----------------------------------------------------------------" << std::endl;
 	std::cout << "  PassCat v." << VERSION << " - Passwords Recovery Tool" << std::endl;
 	std::cout << "  PassCat is an open source tool licensed under GPLv3." << std::endl;
+	std::cout << "  Written by : @maldevel" << std::endl;
+	std::cout << "  https ://www.twelvesec.com/" << std::endl;
 	std::cout << "  Please visit https://github.com/twelvesec/passcat for more.." << std::endl;
 	std::cout << "----------------------------------------------------------------" << std::endl << std::endl;
 
