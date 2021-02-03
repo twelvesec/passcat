@@ -83,7 +83,7 @@ static void _print_passwords(std::wstring filename, std::wstring folder, std::st
 			cellPosition = (rowCtr * columns) + 1;
 			std::cout << "Username: " << results[cellPosition] << std::endl;
 			cellPosition = (rowCtr * columns) + 2;
-			sqlite3_free_table(results);
+			
 
 			if ((rc = sqlite3_blob_open(db, "main", "logins", "password_value", rowCtr, 0, &blob)) != SQLITE_OK) {
 				sqlite3_close(db);
@@ -113,12 +113,16 @@ static void _print_passwords(std::wstring filename, std::wstring folder, std::st
 
 			DataIn.cbData = len;
 			DataIn.pbData = (BYTE *)block;
-
+			
 			if (CryptUnprotectData(&DataIn, NULL, NULL, NULL, NULL, 0, &DataOut)) {
 				DataOut.pbData[DataOut.cbData] = '\0';
 				std::cout << "Password: " << DataOut.pbData << std::endl;
 			}
+
+			
 		}
+
+		sqlite3_free_table(results);
 
 		if (rows > 0) {
 			std::cout << std::endl;
